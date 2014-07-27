@@ -7,7 +7,7 @@ module DelayedPaperclip
 
       def self.enqueue_delayed_paperclip(instance_klass, instance_id, attachment_name)
         # debugger
-        ::SuckerPunch.logger.ino "@@@  @@@  @@@ enqueue_delayed_paperclip : #{instance_id} @@@ @@@ @@@"
+        ::SuckerPunch.logger.info "@@@  @@@  @@@ enqueue_delayed_paperclip : #{instance_id} @@@ @@@ @@@"
         new.async.perform(instance_klass, instance_id, attachment_name)
       end
 
