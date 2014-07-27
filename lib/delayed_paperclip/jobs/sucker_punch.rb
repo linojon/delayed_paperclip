@@ -7,17 +7,17 @@ module DelayedPaperclip
 
       def self.enqueue_delayed_paperclip(instance_klass, instance_id, attachment_name)
         # debugger
-        Rails.logger.ino "@@@  @@@  @@@ enqueue_delayed_paperclip : #{instance_id} @@@ @@@ @@@"
+        ::SuckerPunch.logger.ino "@@@  @@@  @@@ enqueue_delayed_paperclip : #{instance_id} @@@ @@@ @@@"
         new.async.perform(instance_klass, instance_id, attachment_name)
       end
 
       def perform(instance_klass, instance_id, attachment_name)
         # debugger
-        Rails.logger.info "@@@@@@@@@@@@@@@@@@ In perform #{instance_id}"
+        ::SuckerPunch.logger.info "@@@@@@@@@@@@@@@@@@ In perform #{instance_id}"
         ActiveRecord::Base.connection_pool.with_connection do 
           DelayedPaperclip.process_job(instance_klass, instance_id, attachment_name)
         end
-        Rails.logger.ino "leaving perform @@@@@@@@@@@@@@@@"
+        ::SuckerPunch.logger.info "leaving perform @@@@@@@@@@@@@@@@"
       end
     end
     # class SuckerPunch
