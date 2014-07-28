@@ -6,34 +6,17 @@ module DelayedPaperclip
       include ::SuckerPunch::Job
 
       def self.enqueue_delayed_paperclip(instance_klass, instance_id, attachment_name)
-        # debugger
-        ::SuckerPunch.logger.info "@@@  @@@  @@@ enqueue_delayed_paperclip : #{instance_id} @@@ @@@ @@@"
+        # ::SuckerPunch.logger.info "@@@  @@@  @@@ enqueue_delayed_paperclip : #{instance_id} @@@ @@@ @@@"
         new.async.perform(instance_klass, instance_id, attachment_name)
       end
 
       def perform(instance_klass, instance_id, attachment_name)
-        # debugger
-        ::SuckerPunch.logger.info "@@@@@@@@@@@@@@@@@@ In perform #{instance_id}"
+        # ::SuckerPunch.logger.info "@@@@@@@@@@@@@@@@@@ In perform #{instance_id}"
         ActiveRecord::Base.connection_pool.with_connection do 
           DelayedPaperclip.process_job(instance_klass, instance_id, attachment_name)
         end
-        ::SuckerPunch.logger.info "leaving perform @@@@@@@@@@@@@@@@"
+        # ::SuckerPunch.logger.info "leaving perform @@@@@@@@@@@@@@@@"
       end
     end
-    # class SuckerPunch
-    #   include ::SuckerPunch::Job
-    #   @queue = :paperclip
-
-    #   def self.enqueue_delayed_paperclip(instance_klass, instance_id, attachment_name)
-    #     debugger
-    #     ::SuckerPunch.new.async.perform(instance_klass, instance_id, attachment_name)
-    #   end
-    #   def perform(instance_klass, instance_id, attachment_name)
-    #     debugger
-    #     ActiveRecord::Base.connection_pool.with_connection do 
-    #       DelayedPaperclip.process_job(instance_klass, instance_id, attachment_name)
-    #     end
-    #   end
-    # end
   end
 end
